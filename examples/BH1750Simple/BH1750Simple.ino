@@ -39,7 +39,7 @@ void setup(){
   Serial.begin(9600);
   delay(50);
   
-  // for normal sensor resolution (1 lx resolution, 0-65535 lx, 120ms.) use: sensor.begin(RESOLUTION_NORMAL, false);
+  // for normal sensor resolution (1 lx resolution, 0-65535 lx, 120ms, no PowerDown) use: sensor.begin(RESOLUTION_NORMAL, false);
   // Initialize sensor. if sensor is not present, false is returned
   if(sensor.begin()) {
     Serial.println("Sensor initialized");
