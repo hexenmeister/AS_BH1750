@@ -54,8 +54,9 @@ AS_BH1750::AS_BH1750(uint8_t address) {
  *                               dass eine maximalmögliche Auflösung und Messbereich erziehlt werden.
  *                               Die messbaren Werte fangen von 0,11 lx und gehen bis über 100000 lx.
  *                               (ich weis nicht, wie genau die Werte in Grenzbereichen sind, 
- *                               besonders bei hohen Werte habe ich meine Zweifel.)
- *                               Auflösung im Unteren Bereich 0,13 lx, im mittleren 0,5 lx, im oberen 1-2 lx.
+ *                               besonders bei hohen Werte habe ich da meine Zweifel.
+ *                               Die Werte scheinen jedoch weitgehend linear mit der steigenden Helligkeit zu wachsen.)
+ *                               Auflösung im Unteren Bereich ca. 0,13 lx, im mittleren 0,5 lx, im oberen etwa 1-2 lx.
  *                               Die Messzeiten verlängern sich durch mehrfache Messungen und 
  *                               die Änderungen von Measurement Time (MTreg) bis max. ca. 500 ms.
  *   
