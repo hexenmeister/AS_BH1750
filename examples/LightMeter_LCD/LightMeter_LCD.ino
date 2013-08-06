@@ -8,8 +8,8 @@
  * Version 1.2
  * Datum: 05.08.2013
  * 
- * Das Programm benutzt den RTC DS1307 und
- * zeigt die Zeit auf einem 16x2-Symbol-LCD.
+ * Das Programm benutzt den BH1750 (Umgebiungslichtsensor)
+ * und zeigt die Werte in Lux auf einem 16x2-Symbol-LCD.
  * 
  * Verdrahtung (UNO, Nano...)
  * 
