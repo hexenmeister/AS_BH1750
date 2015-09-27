@@ -272,7 +272,7 @@ float AS_BH1750::readLightLevel(DelayFuncPtr fDelayPtr) {
    */
   if(_virtualMode==RESOLUTION_AUTO_HIGH) {
     defineMTReg(BH1750_MTREG_DEFAULT);
-    selectResolutionMode(BH1750_CONTINUOUS_LOW_RES_MODE);
+    selectResolutionMode(BH1750_CONTINUOUS_LOW_RES_MODE, fDelayPtr);
     fDelayPtr(16); // Lesezeit in LowResMode
     uint16_t level = readRawLevel();
 #if BH1750_DEBUG == 1
@@ -287,7 +287,7 @@ float AS_BH1750::readLightLevel(DelayFuncPtr fDelayPtr) {
       // Der Wert ist zufällig. Ab ca. 16000 wäre diese Vorgehnsweise möglich.
       // Ich brauche diese Genauigkeit aber nur in den ganz dunklen Bereichen (zu erkennen, wann wirklich 'dunkel' ist).
       defineMTReg(BH1750_MTREG_MAX);
-      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2);
+      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2, fDelayPtr);
       fDelayPtr(120*3.68); // TODO: Wert prüfen
       //fDelayPtr(122);
     }
@@ -297,7 +297,7 @@ float AS_BH1750::readLightLevel(DelayFuncPtr fDelayPtr) {
 #endif    
       // Bis hierher reicht die 0,5 lx Modus. Normale Empfindlichkeit.
       defineMTReg(BH1750_MTREG_DEFAULT);
-      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2);
+      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2, fDelayPtr);
       fDelayPtr(120); // TODO: Wert prüfen
     } 
     else if(level<60000) {
@@ -306,7 +306,7 @@ float AS_BH1750::readLightLevel(DelayFuncPtr fDelayPtr) {
 #endif    
       // hoher Bereich, 1 lx Modus, normale Empfindlichkeit. Der Wert von 60000 ist mehr oder weniger zufällig, es mus einfach ein hoher Wert, nah an der Grenze sein.
       defineMTReg(BH1750_MTREG_DEFAULT);
-      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE);
+      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE, fDelayPtr);
       fDelayPtr(120); // TODO: Wert prüfen
     }
     else {
@@ -315,7 +315,7 @@ float AS_BH1750::readLightLevel(DelayFuncPtr fDelayPtr) {
 #endif    
       // sehr hoher Bereich, Empfindlichkeit verringern
       defineMTReg(32); // Min+1, bei dem Minimum aus Doku spielt der Sensor (zumindest meiner) verrückt: Die Werte sind ca. 1/10 von den Erwarteten.
-      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE);   
+      selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE, fDelayPtr);
       fDelayPtr(120); // TODO: Wert prüfen
     }
   } 
