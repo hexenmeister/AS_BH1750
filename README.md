@@ -3,6 +3,8 @@ AS_BH1750
 
 a (Arduino) library for the BH1750FVI Digital Light Sensor.
 
+(http://s6z.de/joomla3/index.php/arduino/sensoren/15-umgebungslichtsensor-bh1750)
+
 
 Features:
 
