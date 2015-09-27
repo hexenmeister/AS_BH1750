@@ -62,8 +62,10 @@ AS_BH1750::AS_BH1750(uint8_t address) {
  *   
  * - AutoPowerDown: true = Der Sensor wird nach der Messung in den Stromsparmodus versetzt. 
  *   Das spätere Aufwecken wird ggf. automatisch vorgenommen, braucht jedoch geringfügig mehr Zeit.
+ *  
+ * - DelayFuncPtr: delay(n) Möglichkeit, eigene Delay-Funktion mitzugeben (z.B. um sleep-Modus zu verwenden).
  *
- * Defaultwerte: RESOLUTION_AUTO_HIGH, true
+ * Defaultwerte: RESOLUTION_AUTO_HIGH, true, delay()
  *
  */
 bool AS_BH1750::begin(sensors_resolution_t mode, bool autoPowerDown, DelayFuncPtr fDelay) {
