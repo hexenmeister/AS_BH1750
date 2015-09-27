@@ -66,13 +66,14 @@ AS_BH1750::AS_BH1750(uint8_t address) {
  * Defaultwerte: RESOLUTION_AUTO_HIGH, true
  *
  */
-bool AS_BH1750::begin(sensors_resolution_t mode, bool autoPowerDown) {
+bool AS_BH1750::begin(sensors_resolution_t mode, bool autoPowerDown, DelayFuncPtr fDelay) {
 #if BH1750_DEBUG == 1
   Serial.print("  sensors_resolution_mode (virtual): ");
   Serial.println(mode, DEC);
 #endif
   _virtualMode = mode;
   _autoPowerDown = autoPowerDown;
+  _fDelayPtr = fDelay;
 
   Wire.begin();
 
@@ -165,7 +166,7 @@ void AS_BH1750::powerOn() {
 
   _valueReaded=false;
   //write8(BH1750_POWER_ON); //
-  //delay(10); // Nötig?
+  //_fDelayPtr(10); // Nötig?
   // Scheinbar reicht das Setzen von HardwareMode auch ohne PowerON-Befehl aus
   selectResolutionMode(_hardwareMode); // letzten Modus wieder aktivieren
 }
@@ -215,7 +216,7 @@ bool AS_BH1750::selectResolutionMode(uint8_t mode) {
     if(write8(mode)) {
     // Kurze pause nötig, sonst wird das Modus nicht sicher Aktiviert
     // (z.B. liefert Sensor im AutoHigh Modus abwechselnd übersteuerte Werte, etwa so: 54612.5, 68123.4, 54612.5, 69345.3,..)
-    delay(5);
+    _fDelayPtr(5);
       return true;
     }
     break;
@@ -266,7 +267,7 @@ float AS_BH1750::readLightLevel(void) {
   if(_virtualMode==RESOLUTION_AUTO_HIGH) {
     defineMTReg(BH1750_MTREG_DEFAULT);
     selectResolutionMode(BH1750_CONTINUOUS_LOW_RES_MODE);
-    delay(16); // Lesezeit in LowResMode
+    _fDelayPtr(16); // Lesezeit in LowResMode
     uint16_t level = readRawLevel();
 #if BH1750_DEBUG == 1
     Serial.print("AutoHighMode: check level read: ");
@@ -281,8 +282,8 @@ float AS_BH1750::readLightLevel(void) {
       // Ich brauche diese Genauigkeit aber nur in den ganz dunklen Bereichen (zu erkennen, wann wirklich 'dunkel' ist).
       defineMTReg(BH1750_MTREG_MAX);
       selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2);
-      delay(120*3.68); // TODO: Wert prüfen
-      //delay(122);
+      _fDelayPtr(120*3.68); // TODO: Wert prüfen
+      //_fDelayPtr(122);
     }
     else if(level<32767) {
 #if BH1750_DEBUG == 1
@@ -291,7 +292,7 @@ float AS_BH1750::readLightLevel(void) {
       // Bis hierher reicht die 0,5 lx Modus. Normale Empfindlichkeit.
       defineMTReg(BH1750_MTREG_DEFAULT);
       selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE_2:BH1750_CONTINUOUS_HIGH_RES_MODE_2);
-      delay(120); // TODO: Wert prüfen
+      _fDelayPtr(120); // TODO: Wert prüfen
     } 
     else if(level<60000) {
 #if BH1750_DEBUG == 1
@@ -300,7 +301,7 @@ float AS_BH1750::readLightLevel(void) {
       // hoher Bereich, 1 lx Modus, normale Empfindlichkeit. Der Wert von 60000 ist mehr oder weniger zufällig, es mus einfach ein hoher Wert, nah an der Grenze sein.
       defineMTReg(BH1750_MTREG_DEFAULT);
       selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE);
-      delay(120); // TODO: Wert prüfen
+      _fDelayPtr(120); // TODO: Wert prüfen
     }
     else {
 #if BH1750_DEBUG == 1
@@ -309,7 +310,7 @@ float AS_BH1750::readLightLevel(void) {
       // sehr hoher Bereich, Empfindlichkeit verringern
       defineMTReg(32); // Min+1, bei dem Minimum aus Doku spielt der Sensor (zumindest meiner) verrückt: Die Werte sind ca. 1/10 von den Erwarteten.
       selectResolutionMode(_autoPowerDown?BH1750_ONE_TIME_HIGH_RES_MODE:BH1750_CONTINUOUS_HIGH_RES_MODE);   
-      delay(120); // TODO: Wert prüfen
+      _fDelayPtr(120); // TODO: Wert prüfen
     }
   } 
 
@@ -433,7 +434,7 @@ void AS_BH1750::defineMTReg(uint8_t val) {
     Serial.println(hiByte, BIN);
 #endif
     write8(hiByte);
-    //delay(10);
+    //_fDelayPtr(10);
     // Pause nötig?
     uint8_t loByte = val&0b00011111;
     loByte |= 0b01100000;
@@ -442,7 +443,7 @@ void AS_BH1750::defineMTReg(uint8_t val) {
     Serial.println(loByte, BIN);
 #endif
     write8(hiByte);
-    //delay(10);
+    //_fDelayPtr(10);
   }
 }
 

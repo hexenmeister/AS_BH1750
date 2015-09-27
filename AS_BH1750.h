@@ -87,6 +87,8 @@ typedef enum
   }  
   sensors_resolution_t;
 
+typedef void (*DelayFuncPtr)(unsigned long);
+
 /**
  * BH1750 driver class.
  */
@@ -125,7 +127,7 @@ public:
    * Defaultwerte: RESOLUTION_AUTO_HIGH, true
    *
    */
-  bool begin(sensors_resolution_t mode = RESOLUTION_AUTO_HIGH, bool autoPowerDown = true);
+  bool begin(sensors_resolution_t mode = RESOLUTION_AUTO_HIGH, bool autoPowerDown = true, DelayFuncPtr fDelay = &delay);
 
   /**
    * Erlaub eine Prüfung, ob ein (ansprechbarer) BH1750-Sensor vorhanden ist.
@@ -157,6 +159,8 @@ private:
   bool _autoPowerDown;
 
   bool _valueReaded;
+  
+  DelayFuncPtr _fDelayPtr;
 
   bool selectResolutionMode(uint8_t mode);
   void defineMTReg(uint8_t val);
