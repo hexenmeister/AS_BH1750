@@ -93,7 +93,7 @@ bool AS_BH1750::begin(sensors_resolution_t mode, bool autoPowerDown) {
     _hardwareMode = BH1750_CONTINUOUS_LOW_RES_MODE;
     break;
   default:
-    // darf eigentlich nicht pasieren...
+    // darf eigentlich nicht passieren...
     _hardwareMode = 255;
     break;
   }
