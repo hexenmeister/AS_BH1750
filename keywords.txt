@@ -6,18 +6,18 @@
 # Datatypes (KEYWORD1)
 #######################################
 
-AS_BH1750            KEYWORD1
-sensors_resolution_t KEYWORD1
+AS_BH1750	KEYWORD1
+sensors_resolution_t	KEYWORD1
 
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
 
-begin          KEYWORD2
-isPresent      KEYWORD2
-readLightLevel KEYWORD2
-powerDown      KEYWORD2
+begin	KEYWORD2
+isPresent	KEYWORD2
+readLightLevel	KEYWORD2
+powerDown	KEYWORD2
 
 
 #######################################
